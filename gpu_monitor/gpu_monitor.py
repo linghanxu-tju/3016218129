@@ -71,7 +71,7 @@ def check_process(process_id):
 while(True):
     try:
         tem_num = get_gpu_tem(sys.argv[1])
-        if(!check_process(int(sys.argv[2]))):
+        if(not check_process(int(sys.argv[2]))):
             sys.exit()
         if tem_num > 85:
             nowTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
