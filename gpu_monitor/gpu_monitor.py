@@ -1,3 +1,6 @@
+# -*- coding: UTF-8 -*-
+
+
 import os
 import sys
 import signal
@@ -7,10 +10,10 @@ import smtplib
 from email.mime.text import MIMEText
 
 pause = 1
-mailto_list=[''] #收件人邮箱地址
-mail_host= "smtp.tju.edu.cn" #邮箱服务器
-mail_user= "" #发送警报的邮箱
-mail_pass= "" #SMTP password
+mailto_list=['569593249@qq.com']
+mail_host= "smtp.tju.edu.cn"
+mail_user= "linghanxu@tju.edu.cn" #发送警报的邮箱
+mail_pass= "LinghanXu1998212"
 mail_postfix="tju.edu.cn"
 
 def send_email(to_list,sub,content):
@@ -55,14 +58,24 @@ def kill_process(process_id):
     except OSError:
         print("error!")
 
+def check_process(process_id):
+    try:
+        os.kill(process_id,0)
+    except OSError:
+        return False
+    else:
+        return True
+
 
 
 while(True):
     try:
         tem_num = get_gpu_tem(sys.argv[1])
-        if tem_num > 80:
+        if(!check_process(int(sys.argv[2]))):
+            sys.exit()
+        if tem_num > 85:
             nowTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            warning_str = nowTime+"  Current temperature is " + str(tem_num) + "!"
+            warning_str = nowTime+"  Current temperature is " + str(tem_num) + "!" + sys.argv[2] + "is killed!"
             print(warning_str)
             send_email(mailto_list, "GPU Warning!!!", warning_str)
             print("send over")
